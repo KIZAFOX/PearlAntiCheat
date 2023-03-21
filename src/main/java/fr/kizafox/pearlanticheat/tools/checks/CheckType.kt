@@ -1,6 +1,7 @@
 package fr.kizafox.pearlanticheat.tools.checks
 
-enum class CheckType(name: String) {
+enum class CheckType(var typeName: String) {
 
-    SPEED("Speed");
+    SPEED("Speed"),
+    NOSLOWDOWN("NoSlowDown");
 }

@@ -30,10 +30,10 @@ object CommandPAC : CommandExecutor{
             return true;
         }
 
-        if(instance.USER.containsKey(sender.uniqueId)){
-            instance.USER.remove(sender.uniqueId);
+        if(instance.USERS.containsKey(sender.uniqueId)){
+            instance.USERS.remove(sender.uniqueId);
         }else{
-            instance.USER[sender.uniqueId] = User(sender);
+            instance.USERS[sender.uniqueId] = User(sender);
         }
         return false;
     }

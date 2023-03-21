@@ -17,7 +17,7 @@ class SpeedCheck {
             val exactSpeed: Double = round(xzSpeed * 1000.0) / 1000.0
 
             if ((if (distance.getXDifference() > distance.getZDifference()) distance.getXDifference() else distance.getZDifference()) > Settings.MAX_XZ_SPEED) {
-                return CheckResult(Level.DEFINITELY, "His speed=${exactSpeed}", CheckType.SPEED);
+                return CheckResult(Level.DEFINITELY, "His speed=${exactSpeed}", CheckType.SPEED)
             }
             return CheckResult(Level.PASSED, null, CheckType.SPEED)
         }

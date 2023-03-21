@@ -17,10 +17,10 @@ class PearlAntiCheat : JavaPlugin() {
 
     companion object {
         var instance: PearlAntiCheat? = null
-        val USER = HashMap<UUID, User>()
+        val USERS = HashMap<UUID, User>()
 
         fun log(checkResult: CheckResult, user: User) {
-            val message = "${ChatColor.DARK_GRAY}[${ChatColor.RED}PAC${ChatColor.DARK_GRAY}] ${ChatColor.BLUE}${user.getPlayer().name} ${ChatColor.WHITE}has violated check ${ChatColor.RED}${checkResult.type.name} ${ChatColor.WHITE}! ${ChatColor.RED}${checkResult.message}"
+            val message = "${ChatColor.DARK_GRAY}[${ChatColor.RED}PAC${ChatColor.DARK_GRAY}] ${ChatColor.BLUE}${user.getPlayer().name} ${ChatColor.WHITE}has violated check ${ChatColor.RED}${checkResult.type.typeName} ${ChatColor.WHITE}! ${ChatColor.RED}${checkResult.message}"
             Bukkit.getOnlinePlayers().forEach { players ->
                 run {
                     if(players.isOp){
@@ -29,6 +29,15 @@ class PearlAntiCheat : JavaPlugin() {
                 }
             }
             Bukkit.getConsoleSender().sendMessage(message)
+        }
+
+        fun getUser(player: Player): User {
+            for(users: User in USERS.values){
+                if(users.getPlayer() == player || users.getPlayer().uniqueId == player.uniqueId){
+                    return users;
+                }
+            }
+            return null!!
         }
     }
 
@@ -39,7 +48,7 @@ class PearlAntiCheat : JavaPlugin() {
 
         Bukkit.getOnlinePlayers().forEach { players ->
             run {
-                USER[players.uniqueId] = User(players)
+                USERS[players.uniqueId] = User(players)
             }
         }
 
