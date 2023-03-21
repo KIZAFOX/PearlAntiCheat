@@ -1,6 +1,6 @@
 ## PearlAntiChest
 
-Pour plus de détails, référez-vous au texte de licence disponible [ici](LICENCE).
+Pour plus de détails, référez-vous au texte de licence disponible [ici](LICENSE).
 
 ------------------------------------
 
