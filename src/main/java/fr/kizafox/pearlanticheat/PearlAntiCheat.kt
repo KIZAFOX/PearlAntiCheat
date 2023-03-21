@@ -11,6 +11,7 @@ import java.util.UUID
 
 /**
  * Welcome to the main class of this plugin.
+ * Last update : 03/21/2023
  * @author: KIZAFOX
  */
 class PearlAntiCheat : JavaPlugin() {
