@@ -7,7 +7,13 @@ class Settings {
     companion object{
         var MAX_XZ_SPEED: Double = 0.69
         var MAX_XZ_EATING_SPEED: Double = 0.10117 // 0.10117
-        var MAX_XZ_BLOCKING_SPEED: Double = 0.12 // 0.12
+        var MAX_XZ_BLOCKING_SPEED: Double = 0.12
+        var MAX_XZ_BOW_SPEED: Double = 0.15
+
+        var MAX_WARNINGS: Int = 15
+        var MAX_XZ_BLOCK_SPEED: Double = 0.6714
+        var FOOD_MIN: Long = 1000
+        var BOW_MIN: Long = 100
 
         var FOODS: MutableList<Material> = ArrayList()
 

@@ -6,11 +6,17 @@ import fr.kizafox.pearlanticheat.tools.User
 import fr.kizafox.pearlanticheat.tools.checks.CheckResult
 import fr.kizafox.pearlanticheat.tools.checks.CheckType
 import fr.kizafox.pearlanticheat.tools.checks.Level
+import fr.kizafox.pearlanticheat.tools.checks.player.FastUse
+import fr.kizafox.pearlanticheat.tools.database.Account
+import org.bukkit.ChatColor
+import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.FoodLevelChangeEvent
+import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
@@ -23,6 +29,17 @@ object PlayerListeners : Listener {
     fun onLogin(event: PlayerJoinEvent){
         val player = event.player
         instance.USERS[player.uniqueId] = User(player)
+
+        val account = Account(player)
+
+        if(!account.hasAccount()){
+            account.createAccount()
+            player.sendMessage("${ChatColor.GREEN}Account created with success!")
+        }else{
+            player.sendMessage("${ChatColor.AQUA}Account loaded successfully!")
+        }
+
+        player.sendMessage("${ChatColor.GOLD}Current rank: ${account.getRank()}")
     }
 
     @EventHandler
@@ -36,11 +53,14 @@ object PlayerListeners : Listener {
         val player = event.player
         val user: User = instance.getUser(player)
 
-        if(event.action == Action.RIGHT_CLICK_AIR ||
-            event.action == Action.RIGHT_CLICK_BLOCK &&
-            Settings.FOODS.contains(player.itemInHand.type)){
-            user.setFoodStarting()
-            user.resetInvalidFoodEatableCount()
+        if(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK){
+            if(Settings.FOODS.contains(player.itemInHand.type)) {
+                user.setFoodStarting()
+                user.resetInvalidFoodEatableCount()
+            }else if(player.itemInHand.type == Material.BOW && player.inventory.contains(Material.BOW)){
+                user.setBowStart(System.currentTimeMillis())
+                user.setBow(true)
+            }
         }
     }
 
@@ -58,5 +78,29 @@ object PlayerListeners : Listener {
                 instance.log(CheckResult(Level.DEFINITELY, "(${user.getInvalidFoodEatableCount()} times in a row)", CheckType.NOSLOWDOWN), user)
             }
         }
+
+        val checkResult: CheckResult = FastUse.runFood(user)
+
+        if(checkResult.failed()){
+            event.isCancelled = true
+            instance.log(checkResult, user)
+        }
+    }
+
+    @EventHandler
+    fun onShoot(event: ProjectileLaunchEvent) {
+
+        val user: User = instance.USERS[event.entity.uniqueId]!!
+        val checkResult: CheckResult = FastUse.runBow(user)
+
+        if(checkResult.failed()){
+            event.isCancelled = true
+            instance.log(checkResult, user)
+        }
+    }
+
+    @EventHandler
+    fun onItemSwitch(event: PlayerItemHeldEvent) {
+        instance.getUser(event.player).setBow(false)
     }
 }
