@@ -1,8 +1,10 @@
 package fr.kizafox.pearlanticheat
 
 import fr.kizafox.pearlanticheat.managers.Managers
+import fr.kizafox.pearlanticheat.tools.Settings
 import fr.kizafox.pearlanticheat.tools.User
 import fr.kizafox.pearlanticheat.tools.checks.CheckResult
+import fr.kizafox.pearlanticheat.tools.database.MySQL
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
@@ -20,7 +22,10 @@ class PearlAntiCheat : JavaPlugin() {
         var instance: PearlAntiCheat? = null
         val USERS = HashMap<UUID, User>()
 
+        val mySQL = MySQL()
+
         fun log(checkResult: CheckResult, user: User) {
+            user.addWarning(checkResult.type)
             val message = "${ChatColor.DARK_GRAY}[${ChatColor.RED}PAC${ChatColor.DARK_GRAY}] ${ChatColor.BLUE}${user.getPlayer().name} ${ChatColor.WHITE}has violated check ${ChatColor.RED}${checkResult.type.typeName} ${ChatColor.WHITE}! ${ChatColor.RED}${checkResult.message}"
             Bukkit.getOnlinePlayers().forEach { players ->
                 run {
@@ -30,6 +35,10 @@ class PearlAntiCheat : JavaPlugin() {
                 }
             }
             Bukkit.getConsoleSender().sendMessage(message)
+
+            if(user.getWarnings(checkResult.type) > Settings.MAX_WARNINGS){
+                user.getPlayer().kickPlayer("${ChatColor.DARK_GRAY}[${ChatColor.RED}PAC${ChatColor.DARK_GRAY}]\n${ChatColor.DARK_RED}Kicked for: ${ChatColor.BOLD}${checkResult.type.typeName}")
+            }
         }
 
         fun getUser(player: Player): User {
@@ -53,10 +62,13 @@ class PearlAntiCheat : JavaPlugin() {
             }
         }
 
+        mySQL.init("default", "jdbc:mysql://localhost/pearlanticheat?serverTimezone=UTC", "root", "")
+
         logger.info("Plugin enabled !")
     }
 
     override fun onDisable() {
+        mySQL.close("default")
         logger.info("Plugin disabled !")
     }
 }
