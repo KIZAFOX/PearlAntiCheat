@@ -4,11 +4,14 @@ import fr.kizafox.pearlanticheat.managers.Managers
 import fr.kizafox.pearlanticheat.tools.Settings
 import fr.kizafox.pearlanticheat.tools.User
 import fr.kizafox.pearlanticheat.tools.checks.CheckResult
+import fr.kizafox.pearlanticheat.tools.database.Account
 import fr.kizafox.pearlanticheat.tools.database.MySQL
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 /**
@@ -37,7 +40,15 @@ class PearlAntiCheat : JavaPlugin() {
             Bukkit.getConsoleSender().sendMessage(message)
 
             if(user.getWarnings(checkResult.type) > Settings.MAX_WARNINGS){
-                user.getPlayer().kickPlayer("${ChatColor.DARK_GRAY}[${ChatColor.RED}PAC${ChatColor.DARK_GRAY}]\n${ChatColor.DARK_RED}Kicked for: ${ChatColor.BOLD}${checkResult.type.typeName}")
+                Account(user.getPlayer()).addReportCount(1)
+
+                user.getPlayer().kickPlayer(
+                    "${ChatColor.RED}${ChatColor.BOLD}(!)${ChatColor.RESET}${ChatColor.RED} You have been kicked!\n\n" +
+                            "${ChatColor.GOLD}* ${ChatColor.YELLOW}Kicked by ${ChatColor.GRAY}Admin\n" +
+                            "${ChatColor.GOLD}* ${ChatColor.YELLOW}Kicked on ${ChatColor.GRAY}${LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}\n" +
+                            "${ChatColor.GOLD}* ${ChatColor.YELLOW}Reason ${ChatColor.DARK_RED}${checkResult.type.typeName} ${ChatColor.RED}(Hack)\n\n" +
+                    "${ChatColor.GRAY}${ChatColor.ITALIC}AntiCheat made by @KIZAFOX !"
+                )
             }
         }
 
