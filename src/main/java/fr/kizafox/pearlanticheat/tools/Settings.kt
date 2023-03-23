@@ -5,7 +5,7 @@ import org.bukkit.Material
 class Settings {
 
     companion object{
-        var MAX_XZ_SPEED: Double = 0.789
+        var MAX_XZ_SPEED: Double = 0.808
         var MAX_XZ_EATING_SPEED: Double = 0.10117 // 0.10117
         var MAX_XZ_BLOCKING_SPEED: Double = 0.12
         var MAX_XZ_BOW_SPEED: Double = 0.15
@@ -29,6 +29,7 @@ class Settings {
 
             FOODS.add(Material.GOLDEN_CARROT)
             FOODS.add(Material.GOLDEN_APPLE)
+            FOODS.add(Material.ENCHANTED_GOLDEN_APPLE)
 
             FOODS.add(Material.CARROT)
             FOODS.add(Material.APPLE)
