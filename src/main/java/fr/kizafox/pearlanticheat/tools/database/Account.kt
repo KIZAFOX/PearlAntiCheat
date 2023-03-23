@@ -2,6 +2,7 @@ package fr.kizafox.pearlanticheat.tools.database
 
 import fr.kizafox.pearlanticheat.PearlAntiCheat
 import fr.kizafox.pearlanticheat.tools.database.data.RankUnit
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.sql.ResultSet
 
@@ -12,14 +13,17 @@ class Account(private val player: Player) {
     }
 
     fun createAccount(){
-        mySQL.dataSource().connection.use { connection ->
-            connection.prepareStatement("INSERT INTO users (uuid, name, rank) VALUES (?, ?, ?)").use { statement ->
-                statement.setString(1, player.uniqueId.toString())
-                statement.setString(2, player.name)
-                statement.setString(3, RankUnit.Default.rankName)
+        if(!this.hasAccount()){
+            mySQL.dataSource().connection.use { connection ->
+                connection.prepareStatement("INSERT INTO users (uuid, name, rank, reportCount) VALUES (?, ?, ?, ?)").use { statement ->
+                    statement.setString(1, player.uniqueId.toString())
+                    statement.setString(2, player.name)
+                    statement.setString(3, RankUnit.Default.rankName)
+                    statement.setInt(4, 0)
 
-                statement.executeUpdate()
-                statement.close()
+                    statement.executeUpdate()
+                    statement.close()
+                }
             }
         }
     }
@@ -32,9 +36,26 @@ class Account(private val player: Player) {
                 if(result.next()){
                     return result.getString("uuid") != null
                 }
+
+                statement.close()
             }
         }
         return false
+    }
+
+    fun getUUID(): String{
+        mySQL.dataSource().connection.use { connection ->
+            connection.prepareStatement("SELECT * FROM users WHERE uuid='${player.uniqueId}'").use { statement ->
+                val result: ResultSet = statement.executeQuery()
+
+                if(result.next()){
+                    return result.getString("uuid")
+                }
+
+                statement.close()
+            }
+        }
+        return ""
     }
 
     fun getUserName(): String{
@@ -45,6 +66,8 @@ class Account(private val player: Player) {
                 if(result.next()){
                     return result.getString("name")
                 }
+
+                statement.close()
             }
         }
         return ""
@@ -56,7 +79,6 @@ class Account(private val player: Player) {
                 val result: ResultSet = statement.executeQuery()
 
                 if(result.next()){
-                    println(result.getString("rank"))
                     return result.getString("rank")
                 }
             }
@@ -64,4 +86,44 @@ class Account(private val player: Player) {
         return RankUnit.Default
     }
 
+    fun setRank(rank: RankUnit){
+        mySQL.dataSource().connection.use { connection ->
+            connection.prepareStatement("UPDATE users SET rank=? WHERE uuid=?").use { statement ->
+                statement.setString(1, rank.getName())
+                statement.setString(2, player.uniqueId.toString())
+
+                statement.executeUpdate()
+                statement.close()
+            }
+        }
+    }
+
+    fun getReportCount(): Int{
+        mySQL.dataSource().connection.use { connection ->
+            connection.prepareStatement("SELECT reportCount FROM users WHERE uuid=?").use { statement ->
+                statement.setString(1, player.uniqueId.toString())
+
+                val result: ResultSet = statement.executeQuery()
+                var reportCount = 0
+
+                if(result.next()){
+                    reportCount = result.getInt("reportCount")
+                }
+
+                return reportCount
+            }
+        }
+    }
+
+    fun addReportCount(reportCount: Int){
+        mySQL.dataSource().connection.use { connection ->
+            connection.prepareStatement("UPDATE users SET reportCount=reportCount+? WHERE uuid=?").use { statement ->
+                statement.setInt(1, reportCount)
+                statement.setString(2, player.uniqueId.toString())
+
+                statement.executeUpdate()
+                statement.close()
+            }
+        }
+    }
 }
