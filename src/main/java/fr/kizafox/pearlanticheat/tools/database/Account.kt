@@ -2,9 +2,9 @@ package fr.kizafox.pearlanticheat.tools.database
 
 import fr.kizafox.pearlanticheat.PearlAntiCheat
 import fr.kizafox.pearlanticheat.tools.database.data.RankUnit
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.sql.ResultSet
+import java.util.UUID
 
 class Account(private val player: Player) {
 
@@ -43,19 +43,19 @@ class Account(private val player: Player) {
         return false
     }
 
-    fun getUUID(): String{
+    fun getUUID(): UUID? {
         mySQL.dataSource().connection.use { connection ->
             connection.prepareStatement("SELECT * FROM users WHERE uuid='${player.uniqueId}'").use { statement ->
                 val result: ResultSet = statement.executeQuery()
 
                 if(result.next()){
-                    return result.getString("uuid")
+                    return UUID.fromString(result.getString("uuid"))
                 }
 
                 statement.close()
             }
         }
-        return ""
+        return null
     }
 
     fun getUserName(): String{
