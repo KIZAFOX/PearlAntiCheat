@@ -30,16 +30,7 @@ object PlayerListeners : Listener {
         val player = event.player
         instance.USERS[player.uniqueId] = User(player)
 
-        val account = Account(player)
-
-        if(!account.hasAccount()){
-            account.createAccount()
-            player.sendMessage("${ChatColor.GREEN}Account created with success!")
-        }else{
-            player.sendMessage("${ChatColor.AQUA}Account loaded successfully!")
-        }
-
-        player.sendMessage("${ChatColor.GOLD}Current rank: ${account.getRank()}")
+        Account(player).createAccount()
     }
 
     @EventHandler
@@ -89,8 +80,8 @@ object PlayerListeners : Listener {
 
     @EventHandler
     fun onShoot(event: ProjectileLaunchEvent) {
-
-        val user: User = instance.USERS[event.entity.uniqueId]!!
+        val player = event.entity
+        val user: User = instance.USERS[player.uniqueId]!!
         val checkResult: CheckResult = FastUse.runBow(user)
 
         if(checkResult.failed()){
