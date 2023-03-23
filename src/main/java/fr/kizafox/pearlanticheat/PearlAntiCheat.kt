@@ -6,6 +6,7 @@ import fr.kizafox.pearlanticheat.tools.User
 import fr.kizafox.pearlanticheat.tools.checks.CheckResult
 import fr.kizafox.pearlanticheat.tools.database.Account
 import fr.kizafox.pearlanticheat.tools.database.MySQL
+import fr.kizafox.pearlanticheat.tools.database.data.UserData
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
@@ -24,6 +25,7 @@ class PearlAntiCheat : JavaPlugin() {
     companion object {
         var instance: PearlAntiCheat? = null
         val USERS = HashMap<UUID, User>()
+        val USER_DATA = HashMap<Account, UserData>()
 
         val mySQL = MySQL()
 
