@@ -1,7 +1,11 @@
 package fr.kizafox.pearlanticheat.managers.commands
 
 import fr.kizafox.pearlanticheat.PearlAntiCheat
+import fr.kizafox.pearlanticheat.managers.listeners.PlayerListeners
 import fr.kizafox.pearlanticheat.tools.User
+import fr.kizafox.pearlanticheat.tools.database.Account
+import fr.kizafox.pearlanticheat.tools.database.data.RankUnit
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -30,12 +34,22 @@ object CommandPAC : CommandExecutor{
             return true;
         }
 
-        if(instance.USERS.containsKey(sender.uniqueId)){
-            instance.USERS.remove(sender.uniqueId);
-        }else{
-            instance.USERS[sender.uniqueId] = User(sender);
+        val player: Player = sender
+        val account = Account(player)
+
+        if(!player.isOp && account.getRank() != RankUnit.Moderator){
+            player.sendMessage("${ChatColor.RED}You don't have access to this command!")
+            return true
         }
-        return false;
+
+        if(args!!.isNotEmpty()){
+            player.sendMessage("${ChatColor.RED}Too many arguments for this command!")
+            return true
+        }
+
+        player.sendMessage("Yes!")
+
+        return false
     }
 
 }
