@@ -8,7 +8,7 @@ import fr.kizafox.pearlanticheat.tools.checks.CheckType
 import fr.kizafox.pearlanticheat.tools.checks.Level
 import fr.kizafox.pearlanticheat.tools.checks.player.FastUse
 import fr.kizafox.pearlanticheat.tools.database.Account
-import org.bukkit.ChatColor
+import fr.kizafox.pearlanticheat.tools.database.data.UserData
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 
 object PlayerListeners : Listener {
 
+    private var account: Account? = null;
     private val instance = PearlAntiCheat.Companion
 
     @EventHandler
@@ -30,13 +31,18 @@ object PlayerListeners : Listener {
         val player = event.player
         instance.USERS[player.uniqueId] = User(player)
 
-        Account(player).createAccount()
+        account = Account(player)
+
+        account!!.createAccount()
+
+        instance.USER_DATA[account!!] = UserData(account!!.getUUID()!!, account!!.getUserName(), account!!.getRank(), account!!.getReportCount())
     }
 
     @EventHandler
     fun onLogout(event: PlayerQuitEvent){
         val player = event.player
         instance.USERS.remove(player.uniqueId)
+        instance.USER_DATA.remove(account!!)
     }
 
     @EventHandler
