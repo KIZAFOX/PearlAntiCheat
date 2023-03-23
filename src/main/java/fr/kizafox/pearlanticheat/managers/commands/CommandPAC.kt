@@ -1,11 +1,8 @@
 package fr.kizafox.pearlanticheat.managers.commands
 
 import fr.kizafox.pearlanticheat.PearlAntiCheat
-import fr.kizafox.pearlanticheat.managers.listeners.PlayerListeners
-import fr.kizafox.pearlanticheat.tools.User
 import fr.kizafox.pearlanticheat.tools.database.Account
 import fr.kizafox.pearlanticheat.tools.database.data.RankUnit
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
