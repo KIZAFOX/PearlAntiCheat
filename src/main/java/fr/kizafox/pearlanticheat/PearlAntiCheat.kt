@@ -48,7 +48,7 @@ class PearlAntiCheat : JavaPlugin() {
             }
         }
 
-        mySQL.init("default", "jdbc:mysql://localhost/pearlanticheat?serverTimezone=UTC", "root", "")
+        mySQL.init("default", "jdbc:mysql://${this.config.getString("mysql.url")}/${this.config.getString("mysql.database")}?serverTimezone=UTC", this.config.getString("mysql.user"), this.config.getString("mysql.password"))
 
         logger.info("Plugin enabled !")
     }
