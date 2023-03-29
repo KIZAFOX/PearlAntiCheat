@@ -11,7 +11,7 @@ import org.bukkit.entity.Player
 
 object CommandPAC : CommandExecutor{
 
-    private val instance = PearlAntiCheat.Companion;
+    private val instance = PearlAntiCheat.Companion
 
     /**
      * Executes the given command, returning its success.
@@ -39,12 +39,15 @@ object CommandPAC : CommandExecutor{
             return true
         }
 
-        if(args!!.isNotEmpty()){
-            player.sendMessage("${ChatColor.RED}Too many arguments for this command!")
-            return true
-        }
+        if (args != null) {
+            if(args.size == 1 && args[0] == "reload"){
+                instance.instance!!.reloadConfig()
 
-        player.sendMessage("Yes!")
+                player.sendMessage("${ChatColor.GREEN}The plugin has reloaded successfully!")
+            }else{
+                player.sendMessage("${ChatColor.RED}/pac (reload)")
+            }
+        }
 
         return false
     }
