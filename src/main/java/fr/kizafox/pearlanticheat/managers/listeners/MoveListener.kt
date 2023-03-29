@@ -7,7 +7,6 @@ import fr.kizafox.pearlanticheat.tools.checks.CheckResult
 import fr.kizafox.pearlanticheat.tools.checks.movement.NoSlowDown
 import fr.kizafox.pearlanticheat.tools.checks.movement.SpeedCheck
 import fr.kizafox.pearlanticheat.tools.handlers.LogHandler
-import fr.kizafox.pearlanticheat.tools.handlers.RunnableHandler
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent

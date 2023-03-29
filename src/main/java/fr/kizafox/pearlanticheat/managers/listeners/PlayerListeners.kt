@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 
 object PlayerListeners : Listener {
 
-    private var account: Account? = null;
+    private var account: Account? = null
     private val instance = PearlAntiCheat.Companion
 
     @EventHandler
