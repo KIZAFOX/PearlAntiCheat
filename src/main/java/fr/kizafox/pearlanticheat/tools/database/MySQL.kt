@@ -2,15 +2,13 @@ package fr.kizafox.pearlanticheat.tools.database
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import fr.kizafox.pearlanticheat.PearlAntiCheat
-import org.bukkit.Bukkit
 import java.lang.IllegalStateException
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 class MySQL {
 
-    val pools: ConcurrentMap<String, HikariDataSource> = ConcurrentHashMap()
+    private val pools: ConcurrentMap<String, HikariDataSource> = ConcurrentHashMap()
 
     private fun custom(name: String, custom: HikariDataSource){
         val existing: HikariDataSource? = pools[name]
@@ -23,7 +21,7 @@ class MySQL {
 
     fun defaultCustom(custom: HikariDataSource) = this.custom("default", custom)
 
-    fun init(name: String, url: String, username: String, password: String): HikariDataSource{
+    fun init(name: String?, url: String?, username: String?, password: String?): HikariDataSource{
         val config = HikariConfig()
 
         config.jdbcUrl = url
