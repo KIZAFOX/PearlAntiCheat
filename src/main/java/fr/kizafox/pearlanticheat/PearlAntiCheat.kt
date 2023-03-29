@@ -1,18 +1,13 @@
 package fr.kizafox.pearlanticheat
 
 import fr.kizafox.pearlanticheat.managers.Managers
-import fr.kizafox.pearlanticheat.tools.Settings
 import fr.kizafox.pearlanticheat.tools.User
-import fr.kizafox.pearlanticheat.tools.checks.CheckResult
 import fr.kizafox.pearlanticheat.tools.database.Account
 import fr.kizafox.pearlanticheat.tools.database.MySQL
 import fr.kizafox.pearlanticheat.tools.database.data.UserData
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 /**
@@ -32,7 +27,7 @@ class PearlAntiCheat : JavaPlugin() {
         fun getUser(player: Player): User {
             for(users: User in USERS.values){
                 if(users.getPlayer() == player || users.getPlayer().uniqueId == player.uniqueId){
-                    return users;
+                    return users
                 }
             }
             return null!!
