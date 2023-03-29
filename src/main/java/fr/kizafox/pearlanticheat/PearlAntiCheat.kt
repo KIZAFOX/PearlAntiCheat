@@ -29,31 +29,6 @@ class PearlAntiCheat : JavaPlugin() {
 
         val mySQL = MySQL()
 
-        fun log(checkResult: CheckResult, user: User) {
-            user.addWarning(checkResult.type)
-            val message = "${ChatColor.DARK_GRAY}[${ChatColor.RED}PAC${ChatColor.DARK_GRAY}] ${ChatColor.BLUE}${user.getPlayer().name} ${ChatColor.WHITE}has violated check ${ChatColor.RED}${checkResult.type.typeName} ${ChatColor.WHITE}! ${ChatColor.RED}${checkResult.message}"
-            Bukkit.getOnlinePlayers().forEach { players ->
-                run {
-                    if(players.isOp){
-                        players.sendMessage(message)
-                    }
-                }
-            }
-            Bukkit.getConsoleSender().sendMessage(message)
-
-            if(user.getWarnings(checkResult.type) > Settings.MAX_WARNINGS){
-                Account(user.getPlayer()).addReportCount(1)
-
-                user.getPlayer().kickPlayer(
-                    "${ChatColor.RED}${ChatColor.BOLD}(!)${ChatColor.RESET}${ChatColor.RED} You have been kicked!\n\n" +
-                            "${ChatColor.GOLD}* ${ChatColor.YELLOW}Kicked by ${ChatColor.GRAY}Admin\n" +
-                            "${ChatColor.GOLD}* ${ChatColor.YELLOW}Kicked on ${ChatColor.GRAY}${LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}\n" +
-                            "${ChatColor.GOLD}* ${ChatColor.YELLOW}Reason ${ChatColor.DARK_RED}${checkResult.type.typeName} ${ChatColor.RED}(Hack)\n\n" +
-                    "${ChatColor.GRAY}${ChatColor.ITALIC}AntiCheat made by @KIZAFOX !"
-                )
-            }
-        }
-
         fun getUser(player: Player): User {
             for(users: User in USERS.values){
                 if(users.getPlayer() == player || users.getPlayer().uniqueId == player.uniqueId){
@@ -66,6 +41,9 @@ class PearlAntiCheat : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
+
+        this.saveDefaultConfig()
+        this.config.options().copyDefaults(true)
 
         Managers(this)
 
