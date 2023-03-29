@@ -1,10 +1,10 @@
-package fr.kizafox.pearlanticheat.tools.runnable
+package fr.kizafox.pearlanticheat.tools.handlers
 
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 
-class KBukkitRunnable{
+class RunnableHandler{
     /**
      * @author Dean B <dean@deanveloper.com>
      */
