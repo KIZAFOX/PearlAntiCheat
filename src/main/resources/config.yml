@@ -1,0 +1,12 @@
+###################################
+#                                 #
+#         PearlAntiCheat          #
+#                                 #
+###################################
+
+kick-message:
+ "&c&l(!) &r&cYou have been kicked!\n\n
+&6* &eKicked by &7%kicker%\n
+&6* &eKicked on &7%date%\n
+&6* &eReason &4&n%type%&r &c(Hack)\n\n
+&7&oPearlAntiCheat made by &n@KIZAFOX&r &7!"
