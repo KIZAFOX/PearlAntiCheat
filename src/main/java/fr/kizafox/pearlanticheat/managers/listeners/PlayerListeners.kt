@@ -9,6 +9,7 @@ import fr.kizafox.pearlanticheat.tools.checks.Level
 import fr.kizafox.pearlanticheat.tools.checks.player.FastUse
 import fr.kizafox.pearlanticheat.tools.database.Account
 import fr.kizafox.pearlanticheat.tools.database.data.UserData
+import fr.kizafox.pearlanticheat.tools.handlers.LogHandler
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -72,7 +73,7 @@ object PlayerListeners : Listener {
 
                 user.getPlayer().teleport(user.getFoodStartLocation())
 
-                instance.log(CheckResult(Level.DEFINITELY, "(${user.getInvalidFoodEatableCount()} times in a row)", CheckType.NOSLOWDOWN), user)
+                LogHandler.log(CheckResult(Level.DEFINITELY, "(${user.getInvalidFoodEatableCount()} times in a row)", CheckType.NOSLOWDOWN), user)
             }
         }
 
@@ -80,7 +81,7 @@ object PlayerListeners : Listener {
 
         if(checkResult.failed()){
             event.isCancelled = true
-            instance.log(checkResult, user)
+            LogHandler.log(checkResult, user)
         }
     }
 
@@ -92,7 +93,7 @@ object PlayerListeners : Listener {
 
         if(checkResult.failed()){
             event.isCancelled = true
-            instance.log(checkResult, user)
+            LogHandler.log(checkResult, user)
         }
     }
 
