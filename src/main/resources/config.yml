@@ -4,6 +4,12 @@
 #                                 #
 ###################################
 
+mysql:
+ username: "root"
+ password: ""
+ database: "pearlanticheat"
+ url: "localhost"
+
 kick-message:
  "&c&l(!) &r&cYou have been kicked!\n\n
 &6* &eKicked by &7%kicker%\n
